@@ -1,0 +1,59 @@
+name: 'BridgedAI Register Build'
+description: 'Idempotent POST /v1/builds/ensure — register the current workflow run as a Bridged build before evidence upload or release gate.'
+author: 'BridgedAI'
+branding:
+  icon: 'package'
+  color: 'purple'
+inputs:
+  api-base:
+    description: 'BridgedAI API base URL (https://api.bridgedai.io). Overrides BRIDGED_API_BASE.'
+    required: false
+    default: 'https://api.bridgedai.io'
+  api-url:
+    description: 'Alias for api-base.'
+    required: false
+  api-key:
+    description: 'BridgedAI API key. Overrides BRIDGED_API_KEY / BRIDGEDAI_API_KEY.'
+    required: false
+  access-token:
+    description: 'BridgedAI access token from auth-action (Bearer auth).'
+    required: false
+  org-id:
+    description: 'BridgedAI organization id. Overrides BRIDGED_ORG_ID.'
+    required: false
+  repo-full-name:
+    description: 'Repository full name (default GITHUB_REPOSITORY).'
+    required: false
+  workflow-run-id:
+    description: 'GitHub workflow run id (default GITHUB_RUN_ID).'
+    required: false
+  commit-sha:
+    description: 'Commit SHA (default GITHUB_SHA).'
+    required: false
+  branch:
+    description: 'Branch (default GITHUB_REF_NAME).'
+    required: false
+  workflow-name:
+    description: 'Workflow name (default GITHUB_WORKFLOW).'
+    required: false
+  workflow-path:
+    description: 'Workflow file path (default GITHUB_WORKFLOW_REF basename).'
+    required: false
+  status:
+    description: 'Initial build status (default in_progress).'
+    required: false
+    default: 'in_progress'
+  timeout-ms:
+    description: 'HTTP timeout per request.'
+    required: false
+    default: '60000'
+outputs:
+  build-id:
+    description: 'Bridged build id for this workflow run'
+  project-id:
+    description: 'Bridged project id from the repo binding'
+  created:
+    description: 'true when a new build record was created (false when already registered)'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
